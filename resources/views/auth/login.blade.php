@@ -1,12 +1,11 @@
 <x-guest-layout>
-   <div class=" grid grid-cols-2">
+   <div class=" h-screen grid grid-cols-2 overflow-hidden">
 
        <x-authentication-card>
            <x-slot name="logo">
                {{-- <x-authentication-card-logo /> --}}
                 <h5 class="text-2xl font-bold font- ">
-                   Welcome to MyHouse !!
-                </h5>
+                   @lang("Welcome to") <span class=" uppercase">DreamDwellings</span>                </h5>
                 <p class=" text-gray-500 text-sm ">Please sign-in to your account and start the adventure</p>
            </x-slot>
 
@@ -57,8 +56,8 @@
                </div>
            </form>
        </x-authentication-card>
-     <div>
-            IMAGE
+     <div class=" flex justify-center items-center">
+        <img src="{{ asset('assets/image/login.svg') }}" class=" h-96 w-96" >
      </div>
 
     </div>
