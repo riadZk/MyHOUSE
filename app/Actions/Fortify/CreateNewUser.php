@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
-
+use App\Notifications\NewUserNotification;
+use App\Mail\WelcomeMail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Mail;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -17,7 +21,7 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input): User
+    public function create(array $input)
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
@@ -26,10 +30,18 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+                // Notify the reseller
+            Notification::route('mail', 'riadzakaria48@gmail.com')
+                ->notify(new NewUserNotification($user));
+
+            // Send welcome email to the user
+            Mail::to($user->email)->send(new WelcomeMail($user));
+
+            return 'User added successfully';
     }
 }

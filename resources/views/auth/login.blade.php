@@ -3,18 +3,15 @@
 
        <x-authentication-card>
            <x-slot name="logo">
-               {{-- <x-authentication-card-logo /> --}}
                 <h5 class="text-2xl font-bold font- ">
-                   @lang("Welcome to") <span class=" uppercase">DreamDwellings</span>                </h5>
+                   @lang("Welcome to") <span class=" uppercase">DreamDwellings</span></h5>
                 <p class=" text-gray-500 text-sm ">Please sign in to access your account and explore our platform.</p>
            </x-slot>
-
            @session('status')
                <div class="mb-4 font-medium text-sm text-green-600">
                    {{ $value }}
                </div>
            @endsession
-
            <form method="POST" action="{{ route('login') }}">
                @csrf
 
