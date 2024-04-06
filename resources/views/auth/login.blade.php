@@ -6,7 +6,7 @@
                {{-- <x-authentication-card-logo /> --}}
                 <h5 class="text-2xl font-bold font- ">
                    @lang("Welcome to") <span class=" uppercase">DreamDwellings</span>                </h5>
-                <p class=" text-gray-500 text-sm ">Please sign-in to your account and start the adventure</p>
+                <p class=" text-gray-500 text-sm ">Please sign in to access your account and explore our platform.</p>
            </x-slot>
 
            @session('status')
