@@ -3,15 +3,16 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 use App\Notifications\NewUserNotification;
 use App\Mail\WelcomeMail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -35,13 +36,16 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
-                // Notify the reseller
-            Notification::route('mail', 'riadzakaria48@gmail.com')
-                ->notify(new NewUserNotification($user));
 
-            // Send welcome email to the user
-            Mail::to($user->email)->send(new WelcomeMail($user));
+        // Log the user in after registration
+        Auth::login($user);
 
-            return 'User added successfully';
+        // Uncomment the following lines if you want to notify the reseller and send a welcome email
+        // Notification::route('mail', 'riadzakaria48@gmail.com')
+        //     ->notify(new NewUserNotification($user));
+
+        // Mail::to($user->email)->send(new WelcomeMail($user));
+
+        return 'User added successfully';
     }
 }
